@@ -181,6 +181,7 @@ pub const BUILTIN_RECIPE_IDS: &[&str] = &[
     "kodak-gold-200",
     "kodak-ektar-100",
     "fujifilm-superia-x-tra-400",
+    "fujifilm-velvia-50",
     "ilford-hp5-plus-400",
     "kodak-tri-x-400",
     "cinestill-800t",
@@ -198,6 +199,7 @@ pub fn builtin_recipe_json(id: &str) -> Option<&'static str> {
         "fujifilm-superia-x-tra-400" => Some(include_str!(
             "../recipes/builtin/fujifilm-superia-x-tra-400.json"
         )),
+        "fujifilm-velvia-50" => Some(include_str!("../recipes/builtin/fujifilm-velvia-50.json")),
         "ilford-hp5-plus-400" => Some(include_str!("../recipes/builtin/ilford-hp5-plus-400.json")),
         "kodak-tri-x-400" => Some(include_str!("../recipes/builtin/kodak-tri-x-400.json")),
         "cinestill-800t" => Some(include_str!("../recipes/builtin/cinestill-800t.json")),
@@ -1190,6 +1192,31 @@ mod tests {
     }
 
     #[test]
+    fn fujifilm_velvia_50_is_distinct_from_ektar_100() {
+        let image = sample_image();
+        let ektar_recipe = builtin_recipe("kodak-ektar-100").expect("ektar recipe");
+        let velvia_recipe = builtin_recipe("fujifilm-velvia-50").expect("velvia recipe");
+        let ektar_like = process_image(
+            &image,
+            &ektar_recipe,
+            FilmOptions {
+                seed: 3,
+                ..ektar_recipe.default_options()
+            },
+        );
+        let velvia_like = process_image(
+            &image,
+            &velvia_recipe,
+            FilmOptions {
+                seed: 3,
+                ..velvia_recipe.default_options()
+            },
+        );
+
+        assert_ne!(ektar_like.as_raw(), velvia_like.as_raw());
+    }
+
+    #[test]
     fn cinestill_800t_is_distinct_from_portra() {
         let image = sample_image();
         let portra_recipe = builtin_recipe("portra-400-35mm").expect("portra recipe");
@@ -1307,6 +1334,7 @@ mod tests {
         assert!(builtin_recipe("kodak-gold-200").is_some());
         assert!(builtin_recipe("kodak-ektar-100").is_some());
         assert!(builtin_recipe("fujifilm-superia-x-tra-400").is_some());
+        assert!(builtin_recipe("fujifilm-velvia-50").is_some());
         assert!(builtin_recipe("ilford-hp5-plus-400").is_some());
         assert!(builtin_recipe("kodak-tri-x-400").is_some());
         assert!(builtin_recipe("cinestill-800t").is_some());
@@ -1314,6 +1342,7 @@ mod tests {
         assert!(builtin_recipe("gold-200").is_none());
         assert!(builtin_recipe("ektar").is_none());
         assert!(builtin_recipe("superia").is_none());
+        assert!(builtin_recipe("velvia").is_none());
         assert!(builtin_recipe("hp5").is_none());
         assert!(builtin_recipe("tri-x").is_none());
         assert!(builtin_recipe("800t").is_none());

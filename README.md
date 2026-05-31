@@ -63,6 +63,7 @@ Current built-ins:
 | `kodak-gold-200` | Warm consumer color with stronger yellows and reds |
 | `kodak-ektar-100` | Crisp fine-grain color negative with saturated reds and blues |
 | `fujifilm-superia-x-tra-400` | Cool consumer color with lively greens and cyan-leaning blues |
+| `fujifilm-velvia-50` | Dense slide-film contrast with vivid greens and deep blue skies |
 | `ilford-hp5-plus-400` | High-speed monochrome-inspired contrast and grain |
 | `kodak-tri-x-400` | Punchier black-and-white street contrast with pronounced grain |
 | `cinestill-800t` | Tungsten night color with cool shadows, neon saturation, coarse grain, and red halation |
