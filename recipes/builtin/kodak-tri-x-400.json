@@ -1,0 +1,93 @@
+{
+  "schema_version": 1,
+  "id": "kodak-tri-x-400",
+  "name": "Kodak Tri-X 400",
+  "description": "Tri-X-inspired 400-speed black-and-white negative response: punchy street-documentary contrast, firm shadow separation, bright midtones, controlled highlights, and pronounced silver-like grain.",
+  "author": "filmlook",
+  "tags": [
+    "black-and-white",
+    "mono",
+    "negative",
+    "35mm",
+    "400",
+    "documentary",
+    "street",
+    "grainy"
+  ],
+  "defaults": {
+    "strength": 0.92,
+    "exposure_stops": 0.05,
+    "contrast": 1.12,
+    "shadows": -0.04,
+    "highlight_rolloff": 1.05,
+    "grain": 0.68,
+    "grain_size": 0.72,
+    "halation": 0.04,
+    "vignette": 0.12,
+    "seed": 1
+  },
+  "tone": {
+    "exposure_stops": 0.0,
+    "toe": 0.56,
+    "shadow_lift": 0.006,
+    "mid_contrast": 1.3,
+    "shoulder": 0.88,
+    "shoulder_start": 0.66,
+    "white_point": 1.02
+  },
+  "channel_tone": {
+    "red": {
+      "exposure_stops": 0.025,
+      "toe": -0.02,
+      "contrast": 0.04,
+      "shoulder": 0.0
+    },
+    "green": {
+      "exposure_stops": 0.0,
+      "toe": 0.0,
+      "contrast": 0.03,
+      "shoulder": 0.0
+    },
+    "blue": {
+      "exposure_stops": -0.045,
+      "toe": 0.06,
+      "contrast": -0.025,
+      "shoulder": 0.03
+    }
+  },
+  "color": {
+    "saturation": 1.0,
+    "channel_bias": [
+      1.36,
+      0.94,
+      0.72
+    ],
+    "shadow_tint": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "highlight_tint": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "highlight_desaturation": 0.0
+  },
+  "grain": {
+    "shadows": 1.2,
+    "midtones": 1.42,
+    "highlights": 0.55,
+    "chroma": 0.0,
+    "size_bias": 0.76
+  },
+  "halation": {
+    "color": [
+      0.035,
+      0.035,
+      0.035
+    ],
+    "threshold": 0.88
+  },
+  "monochrome": true
+}

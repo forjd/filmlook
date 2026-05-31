@@ -180,6 +180,7 @@ pub const BUILTIN_RECIPE_IDS: &[&str] = &[
     "portra-400-35mm",
     "kodak-gold-200",
     "ilford-hp5-plus-400",
+    "kodak-tri-x-400",
     "cinestill-800t",
 ];
 
@@ -192,6 +193,7 @@ pub fn builtin_recipe_json(id: &str) -> Option<&'static str> {
         "portra-400-35mm" => Some(include_str!("../recipes/builtin/portra-400-35mm.json")),
         "kodak-gold-200" => Some(include_str!("../recipes/builtin/kodak-gold-200.json")),
         "ilford-hp5-plus-400" => Some(include_str!("../recipes/builtin/ilford-hp5-plus-400.json")),
+        "kodak-tri-x-400" => Some(include_str!("../recipes/builtin/kodak-tri-x-400.json")),
         "cinestill-800t" => Some(include_str!("../recipes/builtin/cinestill-800t.json")),
         _ => None,
     }
@@ -1157,6 +1159,31 @@ mod tests {
     }
 
     #[test]
+    fn kodak_tri_x_400_is_distinct_from_hp5_plus_400() {
+        let image = sample_image();
+        let hp5_recipe = builtin_recipe("ilford-hp5-plus-400").expect("hp5 recipe");
+        let tri_x_recipe = builtin_recipe("kodak-tri-x-400").expect("tri-x recipe");
+        let hp5_like = process_image(
+            &image,
+            &hp5_recipe,
+            FilmOptions {
+                seed: 3,
+                ..hp5_recipe.default_options()
+            },
+        );
+        let tri_x_like = process_image(
+            &image,
+            &tri_x_recipe,
+            FilmOptions {
+                seed: 3,
+                ..tri_x_recipe.default_options()
+            },
+        );
+
+        assert_ne!(hp5_like.as_raw(), tri_x_like.as_raw());
+    }
+
+    #[test]
     fn hue_sectors_target_matching_hues() {
         let image = DynamicImage::ImageRgb8(ImageBuffer::from_fn(3, 1, |x, _| match x {
             0 => Rgb([255, 0, 0]),
@@ -1223,10 +1250,12 @@ mod tests {
         assert!(builtin_recipe("portra-400-35mm").is_some());
         assert!(builtin_recipe("kodak-gold-200").is_some());
         assert!(builtin_recipe("ilford-hp5-plus-400").is_some());
+        assert!(builtin_recipe("kodak-tri-x-400").is_some());
         assert!(builtin_recipe("cinestill-800t").is_some());
         assert!(builtin_recipe("portra400").is_none());
         assert!(builtin_recipe("gold-200").is_none());
         assert!(builtin_recipe("hp5").is_none());
+        assert!(builtin_recipe("tri-x").is_none());
         assert!(builtin_recipe("800t").is_none());
         assert!(builtin_recipe("clean-negative").is_none());
         assert!(builtin_recipe("mono").is_none());
