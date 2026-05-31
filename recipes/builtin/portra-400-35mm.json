@@ -1,0 +1,95 @@
+{
+  "schema_version": 1,
+  "id": "portra-400-35mm",
+  "name": "Portra 400 35mm",
+  "description": "Portra-inspired 400-speed 35mm color-negative tuning for a clean warm lab scan: mild overexposure, creamy highlights, open shadows, controlled color, and visible fine grain.",
+  "author": "filmlook",
+  "tags": [
+    "color-negative",
+    "35mm",
+    "400",
+    "portrait",
+    "warm"
+  ],
+  "aliases": [
+    "portra-400",
+    "portra400",
+    "kodak-portra-400"
+  ],
+  "defaults": {
+    "strength": 0.85,
+    "exposure_stops": 0.35,
+    "contrast": 0.95,
+    "shadows": 0.12,
+    "highlight_rolloff": 1.25,
+    "grain": 0.4,
+    "grain_size": 0.58,
+    "halation": 0.12,
+    "vignette": 0.12,
+    "seed": 1
+  },
+  "tone": {
+    "exposure_stops": 0.08,
+    "toe": 0.44,
+    "shadow_lift": 0.019,
+    "mid_contrast": 1.02,
+    "shoulder": 1.18,
+    "shoulder_start": 0.58,
+    "white_point": 1.12
+  },
+  "channel_tone": {
+    "red": {
+      "exposure_stops": 0.025,
+      "toe": -0.012,
+      "contrast": -0.02,
+      "shoulder": 0.08
+    },
+    "green": {
+      "exposure_stops": 0.0,
+      "toe": 0.0,
+      "contrast": -0.025,
+      "shoulder": 0.02
+    },
+    "blue": {
+      "exposure_stops": -0.035,
+      "toe": 0.05,
+      "contrast": -0.04,
+      "shoulder": -0.025
+    }
+  },
+  "color": {
+    "saturation": 0.88,
+    "channel_bias": [
+      1.03,
+      1.006,
+      0.972
+    ],
+    "shadow_tint": [
+      -0.006,
+      0.006,
+      0.018
+    ],
+    "highlight_tint": [
+      0.028,
+      0.017,
+      -0.012
+    ],
+    "highlight_desaturation": 0.34
+  },
+  "grain": {
+    "shadows": 1.12,
+    "midtones": 0.96,
+    "highlights": 0.36,
+    "chroma": 0.22,
+    "size_bias": 0.58
+  },
+  "halation": {
+    "color": [
+      0.18,
+      0.07,
+      0.008
+    ],
+    "threshold": 0.82
+  },
+  "monochrome": false
+}

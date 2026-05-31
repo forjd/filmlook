@@ -1,0 +1,99 @@
+{
+  "schema_version": 1,
+  "id": "ilford-hp5-plus-400",
+  "name": "Ilford HP5 Plus 400",
+  "description": "Classic 35mm HP5-style black-and-white negative response: medium contrast, rich midtone greys, gentle shadow toe, soft highlights, and visible silver-like grain.",
+  "author": "filmlook",
+  "tags": [
+    "black-and-white",
+    "mono",
+    "negative",
+    "documentary",
+    "street",
+    "iso-400"
+  ],
+  "aliases": [
+    "hp5",
+    "hp5-plus",
+    "hp5-400",
+    "hp5-plus-400",
+    "ilford-hp5",
+    "ilford-hp5-plus"
+  ],
+  "defaults": {
+    "strength": 0.9,
+    "exposure_stops": 0.0,
+    "contrast": 0.98,
+    "shadows": 0.08,
+    "highlight_rolloff": 1.18,
+    "grain": 0.58,
+    "grain_size": 0.66,
+    "halation": 0.05,
+    "vignette": 0.1,
+    "seed": 1
+  },
+  "tone": {
+    "exposure_stops": 0.02,
+    "toe": 0.44,
+    "shadow_lift": 0.01,
+    "mid_contrast": 1.14,
+    "shoulder": 1.02,
+    "shoulder_start": 0.64,
+    "white_point": 1.04
+  },
+  "channel_tone": {
+    "red": {
+      "exposure_stops": 0.035,
+      "toe": -0.015,
+      "contrast": 0.0,
+      "shoulder": 0.02
+    },
+    "green": {
+      "exposure_stops": 0.0,
+      "toe": 0.0,
+      "contrast": 0.015,
+      "shoulder": 0.0
+    },
+    "blue": {
+      "exposure_stops": -0.055,
+      "toe": 0.035,
+      "contrast": -0.035,
+      "shoulder": 0.04
+    }
+  },
+  "color": {
+    "saturation": 1.0,
+    "channel_bias": [
+      1.505,
+      0.699,
+      2.493
+    ],
+    "shadow_tint": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "highlight_tint": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "highlight_desaturation": 0.0
+  },
+  "grain": {
+    "shadows": 1.08,
+    "midtones": 1.24,
+    "highlights": 0.44,
+    "chroma": 0.0,
+    "size_bias": 0.68
+  },
+  "halation": {
+    "color": [
+      0.055,
+      0.055,
+      0.055
+    ],
+    "threshold": 0.86
+  },
+  "monochrome": true
+}

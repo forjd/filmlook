@@ -1,0 +1,90 @@
+{
+  "schema_version": 1,
+  "id": "slide",
+  "name": "Slide",
+  "description": "Higher-contrast reversal-style response with richer color and less forgiving highlights.",
+  "author": "filmlook",
+  "tags": [
+    "slide",
+    "reversal",
+    "contrast",
+    "saturated"
+  ],
+  "aliases": [],
+  "defaults": {
+    "strength": 0.8,
+    "exposure_stops": 0.0,
+    "contrast": 1.0,
+    "shadows": 0.0,
+    "highlight_rolloff": 0.9,
+    "grain": 0.24,
+    "grain_size": 0.32,
+    "halation": 0.08,
+    "vignette": 0.12,
+    "seed": 1
+  },
+  "tone": {
+    "exposure_stops": -0.04,
+    "toe": 0.68,
+    "shadow_lift": 0.0,
+    "mid_contrast": 1.26,
+    "shoulder": 0.42,
+    "shoulder_start": 0.78,
+    "white_point": 0.96
+  },
+  "channel_tone": {
+    "red": {
+      "exposure_stops": 0.0,
+      "toe": 0.0,
+      "contrast": 0.02,
+      "shoulder": -0.02
+    },
+    "green": {
+      "exposure_stops": 0.018,
+      "toe": 0.0,
+      "contrast": 0.02,
+      "shoulder": 0.0
+    },
+    "blue": {
+      "exposure_stops": 0.035,
+      "toe": -0.02,
+      "contrast": 0.0,
+      "shoulder": 0.02
+    }
+  },
+  "color": {
+    "saturation": 1.14,
+    "channel_bias": [
+      0.99,
+      1.012,
+      1.035
+    ],
+    "shadow_tint": [
+      -0.01,
+      0.0,
+      0.018
+    ],
+    "highlight_tint": [
+      0.006,
+      0.012,
+      0.018
+    ],
+    "highlight_desaturation": 0.08
+  },
+  "grain": {
+    "shadows": 0.72,
+    "midtones": 0.62,
+    "highlights": 0.28,
+    "chroma": 0.12,
+    "size_bias": 0.32
+  },
+  "halation": {
+    "color": [
+      0.18,
+      0.06,
+      0.006
+    ],
+    "threshold": 0.84
+  },
+  "monochrome": false
+}

@@ -1,0 +1,129 @@
+{
+  "schema_version": 1,
+  "id": "kodak-gold-200",
+  "name": "Kodak Gold 200",
+  "description": "Gold 200-inspired daylight color-negative look: warm family-album color, lively yellows and reds, yellow-green foliage, cyan-leaning blues, medium punch, soft highlights, and fine visible 35mm grain.",
+  "author": "filmlook",
+  "tags": [
+    "color-negative",
+    "35mm",
+    "200",
+    "consumer",
+    "daylight",
+    "warm",
+    "snapshot"
+  ],
+  "aliases": [
+    "gold",
+    "gold-200",
+    "gold200",
+    "kodak-gold",
+    "kodak-gold200",
+    "kodak-gold-200-35mm"
+  ],
+  "defaults": {
+    "strength": 0.88,
+    "exposure_stops": 0.25,
+    "contrast": 1.05,
+    "shadows": 0.1,
+    "highlight_rolloff": 1.15,
+    "grain": 0.36,
+    "grain_size": 0.5,
+    "halation": 0.08,
+    "vignette": 0.11,
+    "seed": 1
+  },
+  "tone": {
+    "exposure_stops": 0.08,
+    "toe": 0.36,
+    "shadow_lift": 0.018,
+    "mid_contrast": 1.08,
+    "shoulder": 1.04,
+    "shoulder_start": 0.61,
+    "white_point": 1.1
+  },
+  "channel_tone": {
+    "red": {
+      "exposure_stops": 0.055,
+      "toe": -0.02,
+      "contrast": 0.025,
+      "shoulder": 0.045
+    },
+    "green": {
+      "exposure_stops": 0.02,
+      "toe": -0.005,
+      "contrast": 0.01,
+      "shoulder": 0.02
+    },
+    "blue": {
+      "exposure_stops": -0.075,
+      "toe": 0.045,
+      "contrast": -0.035,
+      "shoulder": -0.02
+    }
+  },
+  "color": {
+    "saturation": 1.08,
+    "channel_bias": [
+      1.055,
+      1.02,
+      0.93
+    ],
+    "shadow_tint": [
+      0.006,
+      0.007,
+      -0.003
+    ],
+    "highlight_tint": [
+      0.046,
+      0.028,
+      -0.026
+    ],
+    "highlight_desaturation": 0.26,
+    "hue_sectors": [
+      {
+        "center_degrees": 105.0,
+        "width_degrees": 78.0,
+        "softness": 0.6,
+        "amount": 0.65,
+        "hue_shift_degrees": -8.0,
+        "saturation_scale": 1.06,
+        "luminance_scale": 1.02
+      },
+      {
+        "center_degrees": 220.0,
+        "width_degrees": 86.0,
+        "softness": 0.65,
+        "amount": 0.55,
+        "hue_shift_degrees": -7.0,
+        "saturation_scale": 0.96,
+        "luminance_scale": 0.97
+      },
+      {
+        "center_degrees": 34.0,
+        "width_degrees": 46.0,
+        "softness": 0.5,
+        "amount": 0.35,
+        "hue_shift_degrees": 2.0,
+        "saturation_scale": 1.04,
+        "luminance_scale": 1.02
+      }
+    ]
+  },
+  "grain": {
+    "shadows": 1.08,
+    "midtones": 0.84,
+    "highlights": 0.38,
+    "chroma": 0.34,
+    "size_bias": 0.5
+  },
+  "halation": {
+    "color": [
+      0.22,
+      0.12,
+      0.018
+    ],
+    "threshold": 0.84
+  },
+  "monochrome": false
+}

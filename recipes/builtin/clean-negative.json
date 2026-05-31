@@ -1,0 +1,91 @@
+{
+  "schema_version": 1,
+  "id": "clean-negative",
+  "name": "Clean Negative",
+  "description": "A flattering generic color-negative print with lifted shadows and warm highlights.",
+  "author": "filmlook",
+  "tags": [
+    "color-negative",
+    "portrait",
+    "warm"
+  ],
+  "aliases": [
+    "warm-print"
+  ],
+  "defaults": {
+    "strength": 0.8,
+    "exposure_stops": 0.0,
+    "contrast": 1.0,
+    "shadows": 0.0,
+    "highlight_rolloff": 1.0,
+    "grain": 0.35,
+    "grain_size": 0.45,
+    "halation": 0.25,
+    "vignette": 0.15,
+    "seed": 1
+  },
+  "tone": {
+    "exposure_stops": 0.08,
+    "toe": 0.38,
+    "shadow_lift": 0.018,
+    "mid_contrast": 1.08,
+    "shoulder": 0.82,
+    "shoulder_start": 0.68,
+    "white_point": 1.04
+  },
+  "channel_tone": {
+    "red": {
+      "exposure_stops": 0.025,
+      "toe": -0.02,
+      "contrast": 0.0,
+      "shoulder": 0.04
+    },
+    "green": {
+      "exposure_stops": 0.0,
+      "toe": 0.0,
+      "contrast": -0.01,
+      "shoulder": 0.0
+    },
+    "blue": {
+      "exposure_stops": -0.03,
+      "toe": 0.04,
+      "contrast": -0.02,
+      "shoulder": -0.03
+    }
+  },
+  "color": {
+    "saturation": 0.93,
+    "channel_bias": [
+      1.03,
+      1.005,
+      0.968
+    ],
+    "shadow_tint": [
+      -0.006,
+      0.004,
+      0.014
+    ],
+    "highlight_tint": [
+      0.026,
+      0.014,
+      -0.01
+    ],
+    "highlight_desaturation": 0.18
+  },
+  "grain": {
+    "shadows": 1.06,
+    "midtones": 0.8,
+    "highlights": 0.42,
+    "chroma": 0.22,
+    "size_bias": 0.48
+  },
+  "halation": {
+    "color": [
+      0.32,
+      0.12,
+      0.015
+    ],
+    "threshold": 0.73
+  },
+  "monochrome": false
+}

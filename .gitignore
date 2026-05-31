@@ -1,0 +1,22 @@
+# Rust build artifacts
+/target/
+
+# macOS and editor files
+.DS_Store
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Local environment/config files
+.env
+.env.*
+
+# Logs and temporary files
+*.log
+*.tmp
+*.temp
+
+# Local sample images and generated comparison exports.
+# These can be large or user-owned, so keep them out of public commits by default.
+/test-images/
