@@ -77,12 +77,13 @@ fn lists_and_validates_recipes() {
     assert!(String::from_utf8_lossy(&list_output.stdout).contains("portra-400-35mm"));
     assert!(String::from_utf8_lossy(&list_output.stdout).contains("kodak-gold-200"));
     assert!(String::from_utf8_lossy(&list_output.stdout).contains("ilford-hp5-plus-400"));
+    assert!(String::from_utf8_lossy(&list_output.stdout).contains("cinestill-800t"));
 
     let validate_output = Command::new(env!("CARGO_BIN_EXE_filmlook"))
         .arg("--validate-recipe")
         .arg(concat!(
             env!("CARGO_MANIFEST_DIR"),
-            "/recipes/builtin/kodak-gold-200.json"
+            "/recipes/builtin/cinestill-800t.json"
         ))
         .output()
         .expect("validate recipe");

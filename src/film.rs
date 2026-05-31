@@ -176,8 +176,12 @@ struct RenderTables {
     linear_to_srgb: [u8; OUTPUT_LUT_LEN],
 }
 
-pub const BUILTIN_RECIPE_IDS: &[&str] =
-    &["portra-400-35mm", "kodak-gold-200", "ilford-hp5-plus-400"];
+pub const BUILTIN_RECIPE_IDS: &[&str] = &[
+    "portra-400-35mm",
+    "kodak-gold-200",
+    "ilford-hp5-plus-400",
+    "cinestill-800t",
+];
 
 pub fn builtin_recipe_ids() -> &'static [&'static str] {
     BUILTIN_RECIPE_IDS
@@ -188,6 +192,7 @@ pub fn builtin_recipe_json(id: &str) -> Option<&'static str> {
         "portra-400-35mm" => Some(include_str!("../recipes/builtin/portra-400-35mm.json")),
         "kodak-gold-200" => Some(include_str!("../recipes/builtin/kodak-gold-200.json")),
         "ilford-hp5-plus-400" => Some(include_str!("../recipes/builtin/ilford-hp5-plus-400.json")),
+        "cinestill-800t" => Some(include_str!("../recipes/builtin/cinestill-800t.json")),
         _ => None,
     }
 }
@@ -1127,6 +1132,31 @@ mod tests {
     }
 
     #[test]
+    fn cinestill_800t_is_distinct_from_portra() {
+        let image = sample_image();
+        let portra_recipe = builtin_recipe("portra-400-35mm").expect("portra recipe");
+        let cinestill_recipe = builtin_recipe("cinestill-800t").expect("cinestill recipe");
+        let portra_like = process_image(
+            &image,
+            &portra_recipe,
+            FilmOptions {
+                seed: 3,
+                ..portra_recipe.default_options()
+            },
+        );
+        let cinestill_like = process_image(
+            &image,
+            &cinestill_recipe,
+            FilmOptions {
+                seed: 3,
+                ..cinestill_recipe.default_options()
+            },
+        );
+
+        assert_ne!(portra_like.as_raw(), cinestill_like.as_raw());
+    }
+
+    #[test]
     fn hue_sectors_target_matching_hues() {
         let image = DynamicImage::ImageRgb8(ImageBuffer::from_fn(3, 1, |x, _| match x {
             0 => Rgb([255, 0, 0]),
@@ -1193,9 +1223,11 @@ mod tests {
         assert!(builtin_recipe("portra-400-35mm").is_some());
         assert!(builtin_recipe("kodak-gold-200").is_some());
         assert!(builtin_recipe("ilford-hp5-plus-400").is_some());
+        assert!(builtin_recipe("cinestill-800t").is_some());
         assert!(builtin_recipe("portra400").is_none());
         assert!(builtin_recipe("gold-200").is_none());
         assert!(builtin_recipe("hp5").is_none());
+        assert!(builtin_recipe("800t").is_none());
         assert!(builtin_recipe("clean-negative").is_none());
         assert!(builtin_recipe("mono").is_none());
     }
