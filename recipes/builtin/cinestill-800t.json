@@ -2,7 +2,7 @@
   "schema_version": 1,
   "id": "cinestill-800t",
   "name": "CineStill 800T",
-  "description": "800T-inspired tungsten-balanced color-negative look: cool blue-cyan shadows, warm practical highlights, pronounced red-orange halation, saturated neon color, deeper night contrast, and coarse high-speed 35mm grain.",
+  "description": "800T-inspired tungsten-balanced color-negative look: cool night shadows, warm practical highlights, red-orange halation around bright light sources, saturated neon color, and visible high-speed 35mm grain.",
   "author": "filmlook",
   "tags": [
     "color-negative",
@@ -14,117 +14,117 @@
     "neon"
   ],
   "defaults": {
-    "strength": 0.9,
-    "exposure_stops": 0.05,
-    "contrast": 1.08,
-    "shadows": -0.02,
-    "highlight_rolloff": 1.05,
-    "grain": 0.64,
-    "grain_size": 0.68,
-    "halation": 0.42,
-    "vignette": 0.14,
+    "strength": 0.74,
+    "exposure_stops": 0.25,
+    "contrast": 1.0,
+    "shadows": 0.16,
+    "highlight_rolloff": 1.12,
+    "grain": 0.36,
+    "grain_size": 0.56,
+    "halation": 0.18,
+    "vignette": 0.08,
     "seed": 1
   },
   "tone": {
     "exposure_stops": 0.0,
-    "toe": 0.52,
-    "shadow_lift": 0.008,
-    "mid_contrast": 1.16,
-    "shoulder": 1.08,
-    "shoulder_start": 0.57,
-    "white_point": 1.06
+    "toe": 0.35,
+    "shadow_lift": 0.024,
+    "mid_contrast": 1.04,
+    "shoulder": 1.06,
+    "shoulder_start": 0.6,
+    "white_point": 1.12
   },
   "channel_tone": {
     "red": {
-      "exposure_stops": 0.035,
-      "toe": -0.018,
-      "contrast": 0.02,
-      "shoulder": 0.065
+      "exposure_stops": 0.04,
+      "toe": -0.016,
+      "contrast": 0.015,
+      "shoulder": 0.055
     },
     "green": {
-      "exposure_stops": -0.015,
+      "exposure_stops": 0.0,
       "toe": 0.005,
       "contrast": 0.0,
       "shoulder": 0.015
     },
     "blue": {
-      "exposure_stops": 0.045,
-      "toe": 0.045,
-      "contrast": -0.02,
-      "shoulder": -0.035
+      "exposure_stops": -0.06,
+      "toe": 0.015,
+      "contrast": -0.015,
+      "shoulder": -0.02
     }
   },
   "color": {
-    "saturation": 1.08,
+    "saturation": 1.02,
     "channel_bias": [
-      1.018,
-      0.982,
-      1.07
+      1.04,
+      1.0,
+      0.985
     ],
     "shadow_tint": [
-      -0.014,
-      0.01,
-      0.044
+      0.0,
+      0.003,
+      0.008
     ],
     "highlight_tint": [
-      0.058,
-      0.018,
-      -0.036
+      0.04,
+      0.012,
+      -0.018
     ],
-    "highlight_desaturation": 0.16,
+    "highlight_desaturation": 0.22,
     "hue_sectors": [
       {
         "center_degrees": 28.0,
         "width_degrees": 58.0,
         "softness": 0.52,
-        "amount": 0.62,
+        "amount": 0.48,
         "hue_shift_degrees": 3.0,
-        "saturation_scale": 1.12,
+        "saturation_scale": 1.06,
         "luminance_scale": 1.01
       },
       {
         "center_degrees": 205.0,
         "width_degrees": 92.0,
         "softness": 0.62,
-        "amount": 0.72,
-        "hue_shift_degrees": -6.0,
-        "saturation_scale": 1.14,
-        "luminance_scale": 0.96
+        "amount": 0.28,
+        "hue_shift_degrees": -3.0,
+        "saturation_scale": 1.0,
+        "luminance_scale": 0.99
       },
       {
         "center_degrees": 120.0,
         "width_degrees": 72.0,
         "softness": 0.58,
-        "amount": 0.45,
-        "hue_shift_degrees": 6.0,
-        "saturation_scale": 0.9,
-        "luminance_scale": 0.98
+        "amount": 0.28,
+        "hue_shift_degrees": 4.0,
+        "saturation_scale": 0.96,
+        "luminance_scale": 1.0
       },
       {
         "center_degrees": 315.0,
         "width_degrees": 66.0,
         "softness": 0.55,
-        "amount": 0.44,
-        "hue_shift_degrees": -4.0,
-        "saturation_scale": 1.08,
+        "amount": 0.28,
+        "hue_shift_degrees": -3.0,
+        "saturation_scale": 1.03,
         "luminance_scale": 1.0
       }
     ]
   },
   "grain": {
-    "shadows": 1.34,
-    "midtones": 1.2,
-    "highlights": 0.58,
-    "chroma": 0.46,
-    "size_bias": 0.7
+    "shadows": 1.06,
+    "midtones": 0.96,
+    "highlights": 0.42,
+    "chroma": 0.2,
+    "size_bias": 0.58
   },
   "halation": {
     "color": [
-      0.48,
-      0.14,
-      0.018
+      0.25,
+      0.08,
+      0.01
     ],
-    "threshold": 0.76
+    "threshold": 0.83
   },
   "monochrome": false
 }
