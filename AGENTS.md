@@ -52,13 +52,12 @@ When adding `recipes/builtin/<id>.json`:
 
 1. Keep it valid against `FilmRecipe::validate` in `src/film.rs`.
 2. Add the id to `BUILTIN_RECIPE_IDS`.
-3. Add aliases in `canonical_builtin_recipe_id`.
-4. Add an `include_str!` arm in `builtin_recipe_json`.
-5. Update `README.md` recipe lists and aliases.
-6. Add or update tests so `--list-recipes`, aliases, and distinct output behavior are covered.
-7. Run `cargo fmt`, `cargo test`, `cargo clippy --all-targets -- -D warnings`, and recipe validation.
+3. Add an `include_str!` arm in `builtin_recipe_json`.
+4. Update `README.md` recipe lists.
+5. Add or update tests so `--list-recipes` and distinct output behavior are covered.
+6. Run `cargo fmt`, `cargo test`, `cargo clippy --all-targets -- -D warnings`, and recipe validation.
 
-Recipe ids should be lowercase kebab-case. Prefer descriptive aliases, but keep canonical ids stable once shipped.
+Recipe ids should be lowercase kebab-case and selected by exact id.
 
 ## Recipe Tuning Notes
 

@@ -35,7 +35,7 @@ cargo run -- input.jpg output.jpg --recipe portra-400-35mm
 Batch process a folder:
 
 ```sh
-cargo run -- ./input-photos ./output-photos --recursive --recipe cinematic-daylight
+cargo run -- ./input-photos ./output-photos --recursive --recipe kodak-gold-200
 ```
 
 For real exports or large batches, build the optimized binary:
@@ -53,20 +53,23 @@ List the bundled recipes:
 cargo run -- --list-recipes
 ```
 
+Built-in recipes are selected by the exact id shown in this list.
+
 Current built-ins:
 
 | Recipe | Character |
 | --- | --- |
-| `neutral` | Minimal baseline transform |
-| `clean-negative` | Clean color-negative style |
 | `portra-400-35mm` | Soft contrast, warm skin bias, restrained saturation |
 | `kodak-gold-200` | Warm consumer color with stronger yellows and reds |
 | `ilford-hp5-plus-400` | High-speed monochrome-inspired contrast and grain |
-| `cinematic-daylight` | Cooler shadows, controlled highlights |
-| `tungsten-night` | Warm practical-light bias for low-light scenes |
-| `slide` | Higher contrast and saturation |
-| `consumer-soft` | Gentler contrast and color |
-| `mono` | General-purpose monochrome |
+
+## Demo
+
+| Original | Film render |
+| --- | --- |
+| <img src="demos/fer-troulik-o0WO_-qBnoc-unsplash.jpg" alt="Original bright street barrier photo" width="360"> | <img src="demos/fer-troulik-o0WO_-qBnoc-unsplash-kodak-gold-200.jpg" alt="Kodak Gold 200 render of bright street barrier photo" width="360"><br>`kodak-gold-200` |
+| <img src="demos/weichao-deng-0hcQKV4wTZ0-unsplash.jpg" alt="Original snowy street photo" width="360"> | <img src="demos/weichao-deng-0hcQKV4wTZ0-unsplash-portra-400-35mm.jpg" alt="Portra 400 35mm render of snowy street photo" width="360"><br>`portra-400-35mm` |
+| <img src="demos/andrey-soldatov-vVo3eDYtLD0-unsplash.jpg" alt="Original tree photo" width="360"> | <img src="demos/andrey-soldatov-vVo3eDYtLD0-unsplash-ilford-hp5-plus-400.jpg" alt="Ilford HP5 Plus 400 render of tree photo" width="360"><br>`ilford-hp5-plus-400` |
 
 Use a custom recipe file:
 

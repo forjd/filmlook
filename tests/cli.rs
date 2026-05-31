@@ -14,7 +14,7 @@ fn processes_single_image() {
         .arg(&input)
         .arg(&output)
         .args([
-            "--preset",
+            "--recipe",
             "portra-400-35mm",
             "--grain",
             "0.45",
@@ -82,12 +82,30 @@ fn lists_and_validates_recipes() {
         .arg("--validate-recipe")
         .arg(concat!(
             env!("CARGO_MANIFEST_DIR"),
-            "/recipes/builtin/clean-negative.json"
+            "/recipes/builtin/kodak-gold-200.json"
         ))
         .output()
         .expect("validate recipe");
 
     assert!(validate_output.status.success());
+}
+
+#[test]
+fn rejects_removed_preset_flag() {
+    let dir = tempdir().expect("tempdir");
+    let input = dir.path().join("input.png");
+    let output = dir.path().join("output.jpg");
+    write_sample(&input);
+
+    let run_output = Command::new(env!("CARGO_BIN_EXE_filmlook"))
+        .arg(&input)
+        .arg(&output)
+        .args(["--preset", "portra-400-35mm"])
+        .output()
+        .expect("run filmlook");
+
+    assert!(!run_output.status.success());
+    assert!(!output.exists());
 }
 
 #[test]
@@ -103,7 +121,13 @@ fn processes_batch_folder_recursively() {
     let status = Command::new(env!("CARGO_BIN_EXE_filmlook"))
         .arg(&input_dir)
         .arg(&output_dir)
-        .args(["--recursive", "--preset", "consumer-soft", "--seed", "7"])
+        .args([
+            "--recursive",
+            "--recipe",
+            "ilford-hp5-plus-400",
+            "--seed",
+            "7",
+        ])
         .status()
         .expect("run filmlook");
 

@@ -13,14 +13,6 @@
     "warm",
     "snapshot"
   ],
-  "aliases": [
-    "gold",
-    "gold-200",
-    "gold200",
-    "kodak-gold",
-    "kodak-gold200",
-    "kodak-gold-200-35mm"
-  ],
   "defaults": {
     "strength": 0.88,
     "exposure_stops": 0.25,

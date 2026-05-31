@@ -25,7 +25,7 @@ struct Cli {
     output: Option<PathBuf>,
 
     /// Built-in recipe id or path to a JSON recipe file.
-    #[arg(long, visible_alias = "preset", value_name = "ID_OR_PATH")]
+    #[arg(long, value_name = "ID_OR_PATH")]
     recipe: Option<String>,
 
     /// Overall amount of the look, from 0.0 to 1.0.
@@ -133,7 +133,7 @@ fn main() -> Result<()> {
         .as_ref()
         .context("missing input path; use --list-recipes to inspect recipes")?;
     let output = cli.output.as_ref().context("missing output path")?;
-    let recipe = resolve_recipe(cli.recipe.as_deref().unwrap_or("clean-negative"))?;
+    let recipe = resolve_recipe(cli.recipe.as_deref().unwrap_or("portra-400-35mm"))?;
     let options = options_from_cli(recipe.default_options(), &cli);
 
     if input.is_dir() {
@@ -157,12 +157,7 @@ fn main() -> Result<()> {
 fn list_recipes() {
     for id in builtin_recipe_ids() {
         if let Some(recipe) = builtin_recipe(id) {
-            let aliases = if recipe.aliases.is_empty() {
-                String::new()
-            } else {
-                format!(" aliases: {}", recipe.aliases.join(", "))
-            };
-            println!("{:<22} {}{}", recipe.id, recipe.name, aliases);
+            println!("{:<22} {}", recipe.id, recipe.name);
         }
     }
 }
@@ -178,7 +173,7 @@ fn resolve_recipe(selector: &str) -> Result<FilmRecipe> {
     }
 
     bail!(
-        "unknown recipe '{selector}'. Run `filmlook --list-recipes` or pass a path to a JSON recipe file"
+        "unknown recipe '{selector}'. Run `filmlook --list-recipes` for exact ids or pass a path to a JSON recipe file"
     )
 }
 

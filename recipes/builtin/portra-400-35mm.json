@@ -11,11 +11,6 @@
     "portrait",
     "warm"
   ],
-  "aliases": [
-    "portra-400",
-    "portra400",
-    "kodak-portra-400"
-  ],
   "defaults": {
     "strength": 0.85,
     "exposure_stops": 0.35,

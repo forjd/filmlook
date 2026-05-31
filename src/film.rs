@@ -7,6 +7,7 @@ const OUTPUT_LUT_STEPS: usize = 8192;
 const OUTPUT_LUT_LEN: usize = OUTPUT_LUT_STEPS + 1;
 
 #[derive(Debug, Clone, Copy, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
 pub struct FilmOptions {
     pub strength: f32,
     pub exposure_stops: f32,
@@ -38,6 +39,7 @@ impl Default for FilmOptions {
 }
 
 #[derive(Debug, Clone, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
 pub struct FilmRecipe {
     pub schema_version: u32,
     pub id: String,
@@ -48,8 +50,6 @@ pub struct FilmRecipe {
     pub author: String,
     #[serde(default)]
     pub tags: Vec<String>,
-    #[serde(default)]
-    pub aliases: Vec<String>,
     pub defaults: FilmOptions,
     pub tone: ToneRecipe,
     pub channel_tone: ChannelToneSet,
@@ -61,6 +61,7 @@ pub struct FilmRecipe {
 }
 
 #[derive(Debug, Clone, Copy, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
 pub struct ToneRecipe {
     pub exposure_stops: f32,
     pub toe: f32,
@@ -72,6 +73,7 @@ pub struct ToneRecipe {
 }
 
 #[derive(Debug, Clone, Copy, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
 pub struct ChannelToneSet {
     pub red: ChannelTone,
     pub green: ChannelTone,
@@ -79,6 +81,7 @@ pub struct ChannelToneSet {
 }
 
 #[derive(Debug, Clone, Copy, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
 pub struct ChannelTone {
     pub exposure_stops: f32,
     pub toe: f32,
@@ -87,6 +90,7 @@ pub struct ChannelTone {
 }
 
 #[derive(Debug, Clone, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
 pub struct ColorRecipe {
     pub saturation: f32,
     #[serde(default)]
@@ -99,6 +103,7 @@ pub struct ColorRecipe {
 }
 
 #[derive(Debug, Clone, Copy, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
 pub struct HueSectorRecipe {
     pub center_degrees: f32,
     pub width_degrees: f32,
@@ -115,6 +120,7 @@ pub struct HueSectorRecipe {
 }
 
 #[derive(Debug, Clone, Copy, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
 pub struct GrainResponse {
     pub shadows: f32,
     pub midtones: f32,
@@ -124,6 +130,7 @@ pub struct GrainResponse {
 }
 
 #[derive(Debug, Clone, Copy, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
 pub struct HalationRecipe {
     pub color: [f32; 3],
     pub threshold: f32,
@@ -169,65 +176,18 @@ struct RenderTables {
     linear_to_srgb: [u8; OUTPUT_LUT_LEN],
 }
 
-pub const BUILTIN_RECIPE_IDS: &[&str] = &[
-    "neutral",
-    "clean-negative",
-    "portra-400-35mm",
-    "kodak-gold-200",
-    "ilford-hp5-plus-400",
-    "cinematic-daylight",
-    "tungsten-night",
-    "slide",
-    "consumer-soft",
-    "mono",
-];
+pub const BUILTIN_RECIPE_IDS: &[&str] =
+    &["portra-400-35mm", "kodak-gold-200", "ilford-hp5-plus-400"];
 
 pub fn builtin_recipe_ids() -> &'static [&'static str] {
     BUILTIN_RECIPE_IDS
 }
 
-pub fn canonical_builtin_recipe_id(id: &str) -> Option<&'static str> {
-    match id.trim().to_ascii_lowercase().as_str() {
-        "neutral" | "clean" => Some("neutral"),
-        "clean-negative" | "warm-print" => Some("clean-negative"),
-        "portra-400-35mm" | "portra-400" | "portra400" | "kodak-portra-400" => {
-            Some("portra-400-35mm")
-        }
-        "kodak-gold-200"
-        | "gold"
-        | "gold-200"
-        | "gold200"
-        | "kodak-gold"
-        | "kodak-gold200"
-        | "kodak-gold-200-35mm" => Some("kodak-gold-200"),
-        "ilford-hp5-plus-400"
-        | "hp5"
-        | "hp5-plus"
-        | "hp5-400"
-        | "hp5-plus-400"
-        | "ilford-hp5"
-        | "ilford-hp5-plus" => Some("ilford-hp5-plus-400"),
-        "cinematic-daylight" | "cool-chrome" => Some("cinematic-daylight"),
-        "tungsten-night" => Some("tungsten-night"),
-        "slide" => Some("slide"),
-        "consumer-soft" => Some("consumer-soft"),
-        "mono" | "black-and-white" | "bw" => Some("mono"),
-        _ => None,
-    }
-}
-
 pub fn builtin_recipe_json(id: &str) -> Option<&'static str> {
-    match canonical_builtin_recipe_id(id)? {
-        "neutral" => Some(include_str!("../recipes/builtin/neutral.json")),
-        "clean-negative" => Some(include_str!("../recipes/builtin/clean-negative.json")),
+    match id {
         "portra-400-35mm" => Some(include_str!("../recipes/builtin/portra-400-35mm.json")),
         "kodak-gold-200" => Some(include_str!("../recipes/builtin/kodak-gold-200.json")),
         "ilford-hp5-plus-400" => Some(include_str!("../recipes/builtin/ilford-hp5-plus-400.json")),
-        "cinematic-daylight" => Some(include_str!("../recipes/builtin/cinematic-daylight.json")),
-        "tungsten-night" => Some(include_str!("../recipes/builtin/tungsten-night.json")),
-        "slide" => Some(include_str!("../recipes/builtin/slide.json")),
-        "consumer-soft" => Some(include_str!("../recipes/builtin/consumer-soft.json")),
-        "mono" => Some(include_str!("../recipes/builtin/mono.json")),
         _ => None,
     }
 }
@@ -1117,41 +1077,16 @@ mod tests {
     }
 
     #[test]
-    fn portra_400_35mm_is_distinct_from_generic_negative() {
+    fn portra_400_35mm_is_distinct_from_hp5_plus_400() {
         let image = sample_image();
-        let generic_recipe = builtin_recipe("clean-negative").expect("clean-negative recipe");
         let portra_recipe = builtin_recipe("portra-400-35mm").expect("portra recipe");
-        let generic = process_image(
-            &image,
-            &generic_recipe,
-            FilmOptions {
-                seed: 3,
-                ..generic_recipe.default_options()
-            },
-        );
+        let hp5_recipe = builtin_recipe("ilford-hp5-plus-400").expect("hp5 recipe");
         let portra_like = process_image(
             &image,
             &portra_recipe,
             FilmOptions {
                 seed: 3,
                 ..portra_recipe.default_options()
-            },
-        );
-
-        assert_ne!(generic.as_raw(), portra_like.as_raw());
-    }
-
-    #[test]
-    fn hp5_plus_400_is_distinct_from_generic_mono() {
-        let image = sample_image();
-        let generic_recipe = builtin_recipe("mono").expect("mono recipe");
-        let hp5_recipe = builtin_recipe("ilford-hp5-plus-400").expect("hp5 recipe");
-        let generic = process_image(
-            &image,
-            &generic_recipe,
-            FilmOptions {
-                seed: 3,
-                ..generic_recipe.default_options()
             },
         );
         let hp5_like = process_image(
@@ -1163,7 +1098,7 @@ mod tests {
             },
         );
 
-        assert_ne!(generic.as_raw(), hp5_like.as_raw());
+        assert_ne!(portra_like.as_raw(), hp5_like.as_raw());
     }
 
     #[test]
@@ -1198,7 +1133,7 @@ mod tests {
             1 => Rgb([0, 255, 0]),
             _ => Rgb([0, 0, 255]),
         }));
-        let mut recipe = builtin_recipe("neutral").expect("neutral recipe");
+        let mut recipe = builtin_recipe("portra-400-35mm").expect("portra recipe");
         recipe.color.saturation = 1.0;
         recipe.color.highlight_desaturation = 0.0;
         recipe.color.channel_bias = [1.0, 1.0, 1.0];
@@ -1254,22 +1189,30 @@ mod tests {
     }
 
     #[test]
-    fn built_in_recipe_aliases_resolve() {
-        assert_eq!(
-            canonical_builtin_recipe_id("portra400"),
-            Some("portra-400-35mm")
-        );
-        assert_eq!(
-            canonical_builtin_recipe_id("gold200"),
-            Some("kodak-gold-200")
-        );
-        assert_eq!(
-            canonical_builtin_recipe_id("hp5"),
-            Some("ilford-hp5-plus-400")
-        );
-        assert!(builtin_recipe("warm-print").is_some());
-        assert!(builtin_recipe("gold-200").is_some());
-        assert!(builtin_recipe("hp5-plus").is_some());
+    fn built_in_recipe_lookup_requires_exact_ids() {
+        assert!(builtin_recipe("portra-400-35mm").is_some());
+        assert!(builtin_recipe("kodak-gold-200").is_some());
+        assert!(builtin_recipe("ilford-hp5-plus-400").is_some());
+        assert!(builtin_recipe("portra400").is_none());
+        assert!(builtin_recipe("gold-200").is_none());
+        assert!(builtin_recipe("hp5").is_none());
+        assert!(builtin_recipe("clean-negative").is_none());
+        assert!(builtin_recipe("mono").is_none());
+    }
+
+    #[test]
+    fn recipe_json_rejects_removed_alias_metadata() {
+        let json = builtin_recipe_json("portra-400-35mm")
+            .expect("portra json")
+            .replacen(
+                "\"defaults\"",
+                "\"aliases\": [\"clean\"],\n  \"defaults\"",
+                1,
+            );
+
+        let error = FilmRecipe::from_json_str(&json).expect_err("removed aliases are invalid");
+
+        assert!(error.to_string().contains("aliases"));
     }
 
     fn sample_image() -> DynamicImage {
@@ -1284,6 +1227,6 @@ mod tests {
     }
 
     fn sample_recipe() -> FilmRecipe {
-        builtin_recipe("clean-negative").expect("clean-negative recipe")
+        builtin_recipe("portra-400-35mm").expect("portra recipe")
     }
 }

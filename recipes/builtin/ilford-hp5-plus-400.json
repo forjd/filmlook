@@ -12,14 +12,6 @@
     "street",
     "iso-400"
   ],
-  "aliases": [
-    "hp5",
-    "hp5-plus",
-    "hp5-400",
-    "hp5-plus-400",
-    "ilford-hp5",
-    "ilford-hp5-plus"
-  ],
   "defaults": {
     "strength": 0.9,
     "exposure_stops": 0.0,
