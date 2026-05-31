@@ -1,0 +1,121 @@
+{
+  "schema_version": 1,
+  "id": "kodak-ektar-100",
+  "name": "Kodak Ektar 100",
+  "description": "Ektar-inspired 100-speed color-negative look: crisp contrast, saturated reds and blues, clean daylight color, tight highlight handling, and very fine-grained landscape-friendly texture.",
+  "author": "filmlook",
+  "tags": [
+    "color-negative",
+    "35mm",
+    "100",
+    "daylight",
+    "landscape",
+    "saturated",
+    "fine-grain"
+  ],
+  "defaults": {
+    "strength": 0.86,
+    "exposure_stops": 0.1,
+    "contrast": 1.12,
+    "shadows": 0.02,
+    "highlight_rolloff": 1.05,
+    "grain": 0.22,
+    "grain_size": 0.38,
+    "halation": 0.06,
+    "vignette": 0.1,
+    "seed": 1
+  },
+  "tone": {
+    "exposure_stops": 0.02,
+    "toe": 0.32,
+    "shadow_lift": 0.012,
+    "mid_contrast": 1.18,
+    "shoulder": 0.94,
+    "shoulder_start": 0.64,
+    "white_point": 1.08
+  },
+  "channel_tone": {
+    "red": {
+      "exposure_stops": 0.035,
+      "toe": -0.016,
+      "contrast": 0.025,
+      "shoulder": 0.02
+    },
+    "green": {
+      "exposure_stops": 0.0,
+      "toe": 0.0,
+      "contrast": 0.015,
+      "shoulder": 0.0
+    },
+    "blue": {
+      "exposure_stops": -0.02,
+      "toe": 0.015,
+      "contrast": 0.0,
+      "shoulder": -0.01
+    }
+  },
+  "color": {
+    "saturation": 1.18,
+    "channel_bias": [
+      1.035,
+      1.012,
+      0.98
+    ],
+    "shadow_tint": [
+      -0.004,
+      0.002,
+      0.008
+    ],
+    "highlight_tint": [
+      0.018,
+      0.006,
+      -0.006
+    ],
+    "highlight_desaturation": 0.18,
+    "hue_sectors": [
+      {
+        "center_degrees": 28.0,
+        "width_degrees": 58.0,
+        "softness": 0.52,
+        "amount": 0.5,
+        "hue_shift_degrees": 1.0,
+        "saturation_scale": 1.08,
+        "luminance_scale": 1.01
+      },
+      {
+        "center_degrees": 115.0,
+        "width_degrees": 80.0,
+        "softness": 0.6,
+        "amount": 0.45,
+        "hue_shift_degrees": -4.0,
+        "saturation_scale": 1.09,
+        "luminance_scale": 0.98
+      },
+      {
+        "center_degrees": 220.0,
+        "width_degrees": 90.0,
+        "softness": 0.6,
+        "amount": 0.5,
+        "hue_shift_degrees": -5.0,
+        "saturation_scale": 1.08,
+        "luminance_scale": 0.96
+      }
+    ]
+  },
+  "grain": {
+    "shadows": 0.86,
+    "midtones": 0.62,
+    "highlights": 0.24,
+    "chroma": 0.22,
+    "size_bias": 0.36
+  },
+  "halation": {
+    "color": [
+      0.14,
+      0.055,
+      0.006
+    ],
+    "threshold": 0.86
+  },
+  "monochrome": false
+}

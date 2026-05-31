@@ -179,6 +179,7 @@ struct RenderTables {
 pub const BUILTIN_RECIPE_IDS: &[&str] = &[
     "portra-400-35mm",
     "kodak-gold-200",
+    "kodak-ektar-100",
     "ilford-hp5-plus-400",
     "kodak-tri-x-400",
     "cinestill-800t",
@@ -192,6 +193,7 @@ pub fn builtin_recipe_json(id: &str) -> Option<&'static str> {
     match id {
         "portra-400-35mm" => Some(include_str!("../recipes/builtin/portra-400-35mm.json")),
         "kodak-gold-200" => Some(include_str!("../recipes/builtin/kodak-gold-200.json")),
+        "kodak-ektar-100" => Some(include_str!("../recipes/builtin/kodak-ektar-100.json")),
         "ilford-hp5-plus-400" => Some(include_str!("../recipes/builtin/ilford-hp5-plus-400.json")),
         "kodak-tri-x-400" => Some(include_str!("../recipes/builtin/kodak-tri-x-400.json")),
         "cinestill-800t" => Some(include_str!("../recipes/builtin/cinestill-800t.json")),
@@ -1134,6 +1136,31 @@ mod tests {
     }
 
     #[test]
+    fn kodak_ektar_100_is_distinct_from_gold_200() {
+        let image = sample_image();
+        let gold_recipe = builtin_recipe("kodak-gold-200").expect("gold recipe");
+        let ektar_recipe = builtin_recipe("kodak-ektar-100").expect("ektar recipe");
+        let gold_like = process_image(
+            &image,
+            &gold_recipe,
+            FilmOptions {
+                seed: 3,
+                ..gold_recipe.default_options()
+            },
+        );
+        let ektar_like = process_image(
+            &image,
+            &ektar_recipe,
+            FilmOptions {
+                seed: 3,
+                ..ektar_recipe.default_options()
+            },
+        );
+
+        assert_ne!(gold_like.as_raw(), ektar_like.as_raw());
+    }
+
+    #[test]
     fn cinestill_800t_is_distinct_from_portra() {
         let image = sample_image();
         let portra_recipe = builtin_recipe("portra-400-35mm").expect("portra recipe");
@@ -1249,11 +1276,13 @@ mod tests {
     fn built_in_recipe_lookup_requires_exact_ids() {
         assert!(builtin_recipe("portra-400-35mm").is_some());
         assert!(builtin_recipe("kodak-gold-200").is_some());
+        assert!(builtin_recipe("kodak-ektar-100").is_some());
         assert!(builtin_recipe("ilford-hp5-plus-400").is_some());
         assert!(builtin_recipe("kodak-tri-x-400").is_some());
         assert!(builtin_recipe("cinestill-800t").is_some());
         assert!(builtin_recipe("portra400").is_none());
         assert!(builtin_recipe("gold-200").is_none());
+        assert!(builtin_recipe("ektar").is_none());
         assert!(builtin_recipe("hp5").is_none());
         assert!(builtin_recipe("tri-x").is_none());
         assert!(builtin_recipe("800t").is_none());

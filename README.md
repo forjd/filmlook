@@ -61,6 +61,7 @@ Current built-ins:
 | --- | --- |
 | `portra-400-35mm` | Soft contrast, warm skin bias, restrained saturation |
 | `kodak-gold-200` | Warm consumer color with stronger yellows and reds |
+| `kodak-ektar-100` | Crisp fine-grain color negative with saturated reds and blues |
 | `ilford-hp5-plus-400` | High-speed monochrome-inspired contrast and grain |
 | `kodak-tri-x-400` | Punchier black-and-white street contrast with pronounced grain |
 | `cinestill-800t` | Tungsten night color with cool shadows, neon saturation, coarse grain, and red halation |
