@@ -73,6 +73,8 @@ Current built-ins:
 | <img src="demos/weichao-deng-0hcQKV4wTZ0-unsplash.jpg" alt="Original snowy street photo" width="360"> | <img src="demos/weichao-deng-0hcQKV4wTZ0-unsplash-portra-400-35mm.jpg" alt="Portra 400 35mm render of snowy street photo" width="360"><br>`portra-400-35mm` |
 | <img src="demos/andrey-soldatov-vVo3eDYtLD0-unsplash.jpg" alt="Original tree photo" width="360"> | <img src="demos/andrey-soldatov-vVo3eDYtLD0-unsplash-ilford-hp5-plus-400.jpg" alt="Ilford HP5 Plus 400 render of tree photo" width="360"><br>`ilford-hp5-plus-400` |
 
+Demo source photos are from [Unsplash](https://unsplash.com/).
+
 Use a custom recipe file:
 
 ```sh
