@@ -77,6 +77,7 @@ fn lists_and_validates_recipes() {
     assert!(String::from_utf8_lossy(&list_output.stdout).contains("portra-400-35mm"));
     assert!(String::from_utf8_lossy(&list_output.stdout).contains("kodak-gold-200"));
     assert!(String::from_utf8_lossy(&list_output.stdout).contains("kodak-ektar-100"));
+    assert!(String::from_utf8_lossy(&list_output.stdout).contains("fujifilm-superia-x-tra-400"));
     assert!(String::from_utf8_lossy(&list_output.stdout).contains("ilford-hp5-plus-400"));
     assert!(String::from_utf8_lossy(&list_output.stdout).contains("kodak-tri-x-400"));
     assert!(String::from_utf8_lossy(&list_output.stdout).contains("cinestill-800t"));

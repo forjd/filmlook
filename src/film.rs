@@ -180,6 +180,7 @@ pub const BUILTIN_RECIPE_IDS: &[&str] = &[
     "portra-400-35mm",
     "kodak-gold-200",
     "kodak-ektar-100",
+    "fujifilm-superia-x-tra-400",
     "ilford-hp5-plus-400",
     "kodak-tri-x-400",
     "cinestill-800t",
@@ -194,6 +195,9 @@ pub fn builtin_recipe_json(id: &str) -> Option<&'static str> {
         "portra-400-35mm" => Some(include_str!("../recipes/builtin/portra-400-35mm.json")),
         "kodak-gold-200" => Some(include_str!("../recipes/builtin/kodak-gold-200.json")),
         "kodak-ektar-100" => Some(include_str!("../recipes/builtin/kodak-ektar-100.json")),
+        "fujifilm-superia-x-tra-400" => Some(include_str!(
+            "../recipes/builtin/fujifilm-superia-x-tra-400.json"
+        )),
         "ilford-hp5-plus-400" => Some(include_str!("../recipes/builtin/ilford-hp5-plus-400.json")),
         "kodak-tri-x-400" => Some(include_str!("../recipes/builtin/kodak-tri-x-400.json")),
         "cinestill-800t" => Some(include_str!("../recipes/builtin/cinestill-800t.json")),
@@ -1161,6 +1165,31 @@ mod tests {
     }
 
     #[test]
+    fn fujifilm_superia_x_tra_400_is_distinct_from_gold_200() {
+        let image = sample_image();
+        let gold_recipe = builtin_recipe("kodak-gold-200").expect("gold recipe");
+        let superia_recipe = builtin_recipe("fujifilm-superia-x-tra-400").expect("superia recipe");
+        let gold_like = process_image(
+            &image,
+            &gold_recipe,
+            FilmOptions {
+                seed: 3,
+                ..gold_recipe.default_options()
+            },
+        );
+        let superia_like = process_image(
+            &image,
+            &superia_recipe,
+            FilmOptions {
+                seed: 3,
+                ..superia_recipe.default_options()
+            },
+        );
+
+        assert_ne!(gold_like.as_raw(), superia_like.as_raw());
+    }
+
+    #[test]
     fn cinestill_800t_is_distinct_from_portra() {
         let image = sample_image();
         let portra_recipe = builtin_recipe("portra-400-35mm").expect("portra recipe");
@@ -1277,12 +1306,14 @@ mod tests {
         assert!(builtin_recipe("portra-400-35mm").is_some());
         assert!(builtin_recipe("kodak-gold-200").is_some());
         assert!(builtin_recipe("kodak-ektar-100").is_some());
+        assert!(builtin_recipe("fujifilm-superia-x-tra-400").is_some());
         assert!(builtin_recipe("ilford-hp5-plus-400").is_some());
         assert!(builtin_recipe("kodak-tri-x-400").is_some());
         assert!(builtin_recipe("cinestill-800t").is_some());
         assert!(builtin_recipe("portra400").is_none());
         assert!(builtin_recipe("gold-200").is_none());
         assert!(builtin_recipe("ektar").is_none());
+        assert!(builtin_recipe("superia").is_none());
         assert!(builtin_recipe("hp5").is_none());
         assert!(builtin_recipe("tri-x").is_none());
         assert!(builtin_recipe("800t").is_none());

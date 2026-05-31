@@ -1,0 +1,122 @@
+{
+  "schema_version": 1,
+  "id": "fujifilm-superia-x-tra-400",
+  "name": "Fujifilm Superia X-TRA 400",
+  "description": "Superia X-TRA-inspired 400-speed consumer color-negative look: cool daylight balance, lively greens, cyan-leaning blues, snapshot contrast, forgiving highlights, and visible 35mm grain.",
+  "author": "filmlook",
+  "tags": [
+    "color-negative",
+    "35mm",
+    "400",
+    "consumer",
+    "daylight",
+    "snapshot",
+    "cool",
+    "fuji"
+  ],
+  "defaults": {
+    "strength": 0.86,
+    "exposure_stops": 0.15,
+    "contrast": 1.03,
+    "shadows": 0.08,
+    "highlight_rolloff": 1.1,
+    "grain": 0.42,
+    "grain_size": 0.54,
+    "halation": 0.07,
+    "vignette": 0.12,
+    "seed": 1
+  },
+  "tone": {
+    "exposure_stops": 0.04,
+    "toe": 0.38,
+    "shadow_lift": 0.02,
+    "mid_contrast": 1.07,
+    "shoulder": 1.08,
+    "shoulder_start": 0.6,
+    "white_point": 1.1
+  },
+  "channel_tone": {
+    "red": {
+      "exposure_stops": -0.025,
+      "toe": 0.02,
+      "contrast": -0.015,
+      "shoulder": 0.0
+    },
+    "green": {
+      "exposure_stops": 0.025,
+      "toe": -0.006,
+      "contrast": 0.015,
+      "shoulder": 0.015
+    },
+    "blue": {
+      "exposure_stops": 0.015,
+      "toe": 0.0,
+      "contrast": 0.005,
+      "shoulder": -0.015
+    }
+  },
+  "color": {
+    "saturation": 1.04,
+    "channel_bias": [
+      0.985,
+      1.025,
+      1.035
+    ],
+    "shadow_tint": [
+      -0.006,
+      0.006,
+      0.014
+    ],
+    "highlight_tint": [
+      0.0,
+      0.012,
+      0.006
+    ],
+    "highlight_desaturation": 0.24,
+    "hue_sectors": [
+      {
+        "center_degrees": 115.0,
+        "width_degrees": 82.0,
+        "softness": 0.62,
+        "amount": 0.55,
+        "hue_shift_degrees": -6.0,
+        "saturation_scale": 1.08,
+        "luminance_scale": 1.02
+      },
+      {
+        "center_degrees": 205.0,
+        "width_degrees": 85.0,
+        "softness": 0.62,
+        "amount": 0.5,
+        "hue_shift_degrees": -8.0,
+        "saturation_scale": 1.03,
+        "luminance_scale": 0.98
+      },
+      {
+        "center_degrees": 32.0,
+        "width_degrees": 48.0,
+        "softness": 0.52,
+        "amount": 0.25,
+        "hue_shift_degrees": -2.0,
+        "saturation_scale": 0.98,
+        "luminance_scale": 1.02
+      }
+    ]
+  },
+  "grain": {
+    "shadows": 1.1,
+    "midtones": 0.96,
+    "highlights": 0.4,
+    "chroma": 0.28,
+    "size_bias": 0.56
+  },
+  "halation": {
+    "color": [
+      0.16,
+      0.07,
+      0.012
+    ],
+    "threshold": 0.85
+  },
+  "monochrome": false
+}
