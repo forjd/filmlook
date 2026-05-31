@@ -1,8 +1,24 @@
 # filmlook
 
-`filmlook` is a CLI-first Rust MVP for applying a deterministic film-emulation look to images.
+[![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+[![Rust](https://img.shields.io/badge/rust-2024-orange.svg)](Cargo.toml)
 
-## Usage
+`filmlook` is a CLI-first Rust tool and library for applying deterministic film-emulation looks to images.
+
+It uses data-driven JSON recipes for tone, color, grain, halation, vignette, and monochrome conversion, so looks can be bundled, edited, shared, and selected by id.
+
+## Features
+
+- Deterministic output with seedable grain
+- Built-in film-inspired recipes embedded into the binary
+- Editable JSON recipe format
+- Single-image and recursive batch processing
+- Density-aware, multi-scale grain
+- Highlight-edge halation rather than global blur
+- EXIF orientation handling by default
+- Library API for reuse outside the CLI
+
+## Quick Start
 
 Process one image:
 
@@ -10,10 +26,68 @@ Process one image:
 cargo run -- input.jpg output.jpg
 ```
 
-Tune the look:
+Use a built-in recipe:
 
 ```sh
-cargo run -- input.jpg output.jpg \
+cargo run -- input.jpg output.jpg --recipe portra-400-35mm
+```
+
+Batch process a folder:
+
+```sh
+cargo run -- ./input-photos ./output-photos --recursive --recipe cinematic-daylight
+```
+
+For real exports or large batches, build the optimized binary:
+
+```sh
+cargo build --release
+target/release/filmlook input.jpg output.jpg --recipe kodak-gold-200
+```
+
+## Recipes
+
+List the bundled recipes:
+
+```sh
+cargo run -- --list-recipes
+```
+
+Current built-ins:
+
+| Recipe | Character |
+| --- | --- |
+| `neutral` | Minimal baseline transform |
+| `clean-negative` | Clean color-negative style |
+| `portra-400-35mm` | Soft contrast, warm skin bias, restrained saturation |
+| `kodak-gold-200` | Warm consumer color with stronger yellows and reds |
+| `ilford-hp5-plus-400` | High-speed monochrome-inspired contrast and grain |
+| `cinematic-daylight` | Cooler shadows, controlled highlights |
+| `tungsten-night` | Warm practical-light bias for low-light scenes |
+| `slide` | Higher contrast and saturation |
+| `consumer-soft` | Gentler contrast and color |
+| `mono` | General-purpose monochrome |
+
+Use a custom recipe file:
+
+```sh
+cargo run -- input.jpg output.jpg --recipe ./recipes/my-look.json
+```
+
+Validate a recipe:
+
+```sh
+cargo run -- --validate-recipe ./recipes/my-look.json
+```
+
+Named stock recipes are inspired tunings for research and local use. Review trademark and licensing implications before public commercial use.
+
+## Controls
+
+Recipe defaults can be overridden from the CLI:
+
+```sh
+filmlook input.jpg output.jpg \
   --recipe portra-400-35mm \
   --exposure-stops 0.3 \
   --contrast 1.05 \
@@ -26,87 +100,27 @@ cargo run -- input.jpg output.jpg \
   --seed 42
 ```
 
-Batch process a folder:
+Common controls:
 
-```sh
-cargo run -- ./input-photos ./output-photos --recursive --recipe cinematic-daylight
-```
-
-Use a shared or edited JSON recipe:
-
-```sh
-cargo run -- input.jpg output.jpg --recipe ./recipes/my-film.json
-```
-
-List bundled recipes:
-
-```sh
-cargo run -- --list-recipes
-```
-
-Validate a recipe file:
-
-```sh
-cargo run -- --validate-recipe ./recipes/my-film.json
-```
-
-## Performance
-
-For real photos, prefer the optimized binary:
-
-```sh
-cargo build --release
-target/release/filmlook input.jpg output.jpg --recipe portra-400-35mm
-```
-
-`cargo run` uses Cargo's dev profile. This repo sets a light dev optimization level so local runs are usable, but `--release` is still the right path for final exports and batch jobs.
-
-## Recipes
-
-Built-in recipes live in `recipes/builtin/*.json` and are also embedded into the binary:
-
-- `neutral`
-- `clean-negative`
-- `portra-400-35mm`
-- `kodak-gold-200`
-- `ilford-hp5-plus-400`
-- `cinematic-daylight`
-- `tungsten-night`
-- `slide`
-- `consumer-soft`
-- `mono`
-
-The old MVP `--preset` flag still works as an alias for `--recipe`, and old names still resolve:
-
-- `clean` -> `neutral`
-- `warm-print` -> `clean-negative`
-- `cool-chrome` -> `cinematic-daylight`
-- `portra400` -> `portra-400-35mm`
-- `gold200` -> `kodak-gold-200`
-- `hp5` -> `ilford-hp5-plus-400`
-
-Named stock recipes such as `portra-400-35mm`, `kodak-gold-200`, and `ilford-hp5-plus-400` are inspired tunings for local/R&D use. Rename them before public commercial release unless trademark/licensing has been reviewed.
+| Flag | Purpose |
+| --- | --- |
+| `--strength` | Overall look amount, `0.0..1.0` |
+| `--exposure-stops` | Virtual exposure offset, `-3.0..3.0` |
+| `--contrast` | Midtone contrast multiplier |
+| `--shadows` | Toe and shadow adjustment, `-1.0..1.0` |
+| `--highlight-rolloff` | Shoulder strength, `0.0..2.0` |
+| `--grain` | Density-aware grain amount, `0.0..1.0` |
+| `--grain-size` | Grain scale, `0.0..1.0` |
+| `--halation` | Highlight-edge halation amount, `0.0..1.0` |
+| `--vignette` | Edge darkening amount, `0.0..1.0` |
+| `--seed` | Deterministic grain seed |
+| `--quality` | JPEG output quality |
 
 ## Recipe Format
 
-Recipes are JSON data, not executable code. A recipe contains:
+Recipes are plain JSON. They define metadata, defaults, tone response, channel response, color shaping, grain, halation, and monochrome behavior.
 
-- metadata: `schema_version`, `id`, `name`, `description`, `author`, `tags`, `aliases`
-- defaults: initial values for strength, grain, halation, vignette, and similar controls
-- tone: exposure offset, toe, shadow lift, midtone contrast, shoulder, white point
-- channel tone: red/green/blue response differences
-- color: saturation, highlight desaturation, channel bias, shadow tint, highlight tint, optional hue-sector shaping
-- grain: density response and grain size bias
-- halation: color and threshold
-- `monochrome`
-
-CLI controls override recipe defaults without changing the JSON file. For example:
-
-```sh
-filmlook input.jpg output.jpg --recipe portra-400-35mm --grain 0.15
-```
-
-Hue sectors can target specific color families in recipe JSON:
+Hue-sector shaping can target specific color families:
 
 ```json
 {
@@ -124,39 +138,26 @@ Hue sectors can target specific color families in recipe JSON:
 }
 ```
 
-## Controls
+CLI controls override recipe defaults at runtime without modifying the JSON file.
 
-- `--strength`: overall look amount, `0.0..1.0`
-- `--exposure-stops`: virtual exposure in stops, `-3.0..3.0`
-- `--contrast`: midtone contrast multiplier
-- `--shadows`: toe/shadow adjustment, `-1.0..1.0`
-- `--highlight-rolloff`: shoulder strength multiplier, `0.0..2.0`
-- `--grain`: density-aware grain amount, `0.0..1.0`
-- `--grain-size`: grain scale, `0.0..1.0`
-- `--halation`: highlight-edge halation amount, `0.0..1.0`
-- `--vignette`: edge darkening amount, `0.0..1.0`
-- `--seed`: deterministic grain seed
-- `--quality`: JPEG output quality
+## Project Status
 
-## Current Engine
+`filmlook` is an early MVP. The command-line interface, recipe schema, and library API may change before a stable release.
 
-- `src/film.rs` contains the reusable image-processing pipeline.
-- `src/main.rs` contains CLI parsing, metadata loading, batch walking, and image saving.
-- Input pixels are converted from sRGB-like values to linear RGB before the look is applied.
-- The tone response uses explicit toe, midtone slope, and shoulder parameters.
-- Recipes use channel-specific tone response, tinting, saturation, hue-sector shaping, grain response, and halation thresholds.
-- Grain is deterministic, density-aware, color-layer aware, and multi-scale.
-- Halation is driven by bright high-contrast edges, not a global glow.
-- EXIF orientation is applied by default; use `--no-auto-orient` to disable it.
-- Embedded ICC profile detection is present as groundwork, but the engine currently processes decoded RGB as sRGB.
+Current engine notes:
 
-## Likely Next Steps
+- Input pixels are decoded as sRGB-like RGB and converted to linear RGB before processing.
+- EXIF orientation is applied by default. Use `--no-auto-orient` to disable it.
+- Embedded ICC profiles are detected and reported, but full ICC conversion is not implemented yet.
+- RAW input is not currently supported.
 
-- Add proper ICC profile conversion instead of only detection/warnings.
-- Add golden-image snapshot tests with a curated sample set.
-- Add optional output format conversion for batch mode.
-- Add user recipe discovery from an app config directory.
-- Add RAW input through a separate pro pipeline.
+Likely next steps:
+
+- ICC profile conversion
+- Golden-image snapshot tests
+- Output format conversion in batch mode
+- User recipe discovery from a config directory
+- A separate RAW-oriented pipeline
 
 ## License
 
