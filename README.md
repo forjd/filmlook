@@ -2,13 +2,17 @@
 
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 [![Rust](https://img.shields.io/badge/rust-2024-orange.svg)](Cargo.toml)
+[![Desktop: Tauri](https://img.shields.io/badge/desktop-Tauri-24C8DB.svg)](apps/desktop/src-tauri/tauri.conf.json)
 
-`filmlook` is a CLI-first Rust tool and library for applying deterministic film-emulation looks to images.
+`filmlook` is a Rust film-emulation engine with a native Tauri desktop app, a deterministic CLI, and a reusable library API.
 
-It uses data-driven JSON recipes for tone, color, grain, halation, vignette, and monochrome conversion, so looks can be bundled, edited, shared, and selected by id.
+The same data-driven JSON recipes power the desktop and CLI workflows, covering tone, color, grain, halation, vignette, and monochrome conversion. Looks can be bundled, edited, shared, and selected by id.
 
 ## Features
 
+- Native Tauri v2 desktop app with a React/Vite UI
+- Interactive recipe browsing, split previews, control tuning, and image export
+- Shared Rust processing engine for the desktop app, CLI, and library API
 - Deterministic output with seedable grain
 - Built-in film-inspired recipes embedded into the binary
 - Editable JSON recipe format
@@ -16,9 +20,29 @@ It uses data-driven JSON recipes for tone, color, grain, halation, vignette, and
 - Density-aware, multi-scale grain
 - Highlight-edge halation rather than global blur
 - EXIF orientation handling by default
-- Library API for reuse outside the CLI
 
-## Quick Start
+## Desktop App
+
+The desktop frontend lives in `apps/desktop`. It is a Tauri v2 app with a React/Vite UI that calls the Rust library directly for recipe listing, preview rendering, and export.
+
+Run the native desktop shell:
+
+```sh
+cd apps/desktop
+npm install
+npm run tauri dev
+```
+
+Run only the web UI during development:
+
+```sh
+cd apps/desktop
+npm run dev
+```
+
+File dialogs and full image export are available in the Tauri shell. The browser dev server uses bundled demo images for preview.
+
+## CLI Quick Start
 
 Process one image:
 
@@ -45,25 +69,6 @@ cargo build --release
 target/release/filmlook input.jpg output.jpg --recipe kodak-gold-200
 ```
 
-## Desktop App
-
-The desktop frontend lives in `apps/desktop`. It is a Tauri v2 app with a React/Vite UI that calls the Rust library directly for recipe listing, preview rendering, and export.
-
-Run the web UI during development:
-
-```sh
-cd apps/desktop
-npm install
-npm run dev
-```
-
-Run the native desktop shell:
-
-```sh
-cd apps/desktop
-npm run tauri dev
-```
-
 ## Recipes
 
 List the bundled recipes:
@@ -72,7 +77,7 @@ List the bundled recipes:
 cargo run -- --list-recipes
 ```
 
-Built-in recipes are selected by the exact id shown in this list.
+Built-in recipes are available in both the desktop app and CLI. In the CLI, recipes are selected by the exact id shown in this list.
 
 Current built-ins:
 
@@ -172,7 +177,7 @@ CLI controls override recipe defaults at runtime without modifying the JSON file
 
 ## Project Status
 
-`filmlook` is an early MVP. The command-line interface, recipe schema, and library API may change before a stable release.
+`filmlook` is an early MVP. The desktop app, command-line interface, recipe schema, and library API may change before a stable release.
 
 Current engine notes:
 
@@ -183,6 +188,7 @@ Current engine notes:
 
 Likely next steps:
 
+- Desktop packaging, signing, and release builds
 - ICC profile conversion
 - Golden-image snapshot tests
 - Output format conversion in batch mode
