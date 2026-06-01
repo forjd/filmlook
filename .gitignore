@@ -1,5 +1,7 @@
 # Rust build artifacts
 /target/
+/apps/desktop/src-tauri/target/
+/apps/desktop/src-tauri/gen/
 
 # macOS and editor files
 .DS_Store
@@ -16,6 +18,8 @@
 *.log
 *.tmp
 *.temp
+/apps/desktop/node_modules/
+/apps/desktop/dist/
 
 # Local sample images and generated comparison exports.
 # These can be large or user-owned, so keep them out of public commits by default.

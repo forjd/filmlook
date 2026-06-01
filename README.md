@@ -45,6 +45,25 @@ cargo build --release
 target/release/filmlook input.jpg output.jpg --recipe kodak-gold-200
 ```
 
+## Desktop App
+
+The desktop frontend lives in `apps/desktop`. It is a Tauri v2 app with a React/Vite UI that calls the Rust library directly for recipe listing, preview rendering, and export.
+
+Run the web UI during development:
+
+```sh
+cd apps/desktop
+npm install
+npm run dev
+```
+
+Run the native desktop shell:
+
+```sh
+cd apps/desktop
+npm run tauri dev
+```
+
 ## Recipes
 
 List the bundled recipes:
