@@ -1,6 +1,8 @@
 import { invoke } from "@tauri-apps/api/core";
 import { open, save } from "@tauri-apps/plugin-dialog";
 
+const PREVIEW_MAX_EDGE = 1200;
+
 export type FilmOptions = {
   strength: number;
   exposure_stops: number;
@@ -147,7 +149,7 @@ export async function renderPreview(
     inputPath,
     recipeId,
     options,
-    maxEdge: 1800,
+    maxEdge: PREVIEW_MAX_EDGE,
   });
 }
 

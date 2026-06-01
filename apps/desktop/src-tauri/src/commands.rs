@@ -65,7 +65,27 @@ pub fn list_recipes() -> Result<Vec<RecipeSummary>, String> {
 }
 
 #[tauri::command]
-pub fn render_preview(
+pub async fn render_preview(
+    input_path: PathBuf,
+    recipe_id: String,
+    options: FilmOptions,
+    max_edge: u32,
+) -> Result<PreviewResult, String> {
+    tauri::async_runtime::spawn_blocking(move || {
+        render_preview_blocking(input_path, recipe_id, options, max_edge)
+    })
+    .await
+    .map_err(to_message)?
+}
+
+#[tauri::command]
+pub async fn export_image(request: ExportRequest) -> Result<ExportResult, String> {
+    tauri::async_runtime::spawn_blocking(move || export_image_blocking(request))
+        .await
+        .map_err(to_message)?
+}
+
+fn render_preview_blocking(
     input_path: PathBuf,
     recipe_id: String,
     options: FilmOptions,
@@ -103,8 +123,7 @@ pub fn render_preview(
     })
 }
 
-#[tauri::command]
-pub fn export_image(request: ExportRequest) -> Result<ExportResult, String> {
+fn export_image_blocking(request: ExportRequest) -> Result<ExportResult, String> {
     let recipe = builtin_recipe(&request.recipe_id)
         .ok_or_else(|| format!("unknown recipe '{}'", request.recipe_id))?;
     let loaded = load_image(&request.input_path, request.auto_orient).map_err(to_message)?;
@@ -129,7 +148,7 @@ pub fn export_image(request: ExportRequest) -> Result<ExportResult, String> {
 }
 
 fn resize_for_preview(image: DynamicImage, max_edge: u32) -> DynamicImage {
-    let max_edge = max_edge.clamp(320, 2400);
+    let max_edge = max_edge.clamp(320, 1600);
     let (width, height) = image.dimensions();
 
     if width <= max_edge && height <= max_edge {

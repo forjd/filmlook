@@ -8,7 +8,7 @@ import {
   SlidersHorizontal,
   Star,
 } from "lucide-react";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import {
   type FilmOptions,
   type PreviewResult,
@@ -61,6 +61,7 @@ function App() {
   const [split, setSplit] = useState(52);
   const [status, setStatus] = useState("Ready");
   const [isBusy, setIsBusy] = useState(false);
+  const previewRequestId = useRef(0);
 
   const selectedRecipe = useMemo(
     () => recipes.find((recipe) => recipe.id === selectedRecipeId) ?? recipes[0],
@@ -91,17 +92,27 @@ function App() {
 
   const refreshPreview = useCallback(
     async (path: string | null, recipeId: string, nextOptions: FilmOptions) => {
+      const requestId = previewRequestId.current + 1;
+      previewRequestId.current = requestId;
       setIsBusy(true);
       setStatus(path ? "Rendering preview" : "Preview sample");
 
       try {
         const result = await renderPreview(path, recipeId, nextOptions);
+        if (requestId !== previewRequestId.current) {
+          return;
+        }
         setPreview(result);
         setStatus(result.warning ?? (path ? "Preview ready" : "Preview sample"));
       } catch (error) {
+        if (requestId !== previewRequestId.current) {
+          return;
+        }
         setStatus(`Preview failed: ${String(error)}`);
       } finally {
-        setIsBusy(false);
+        if (requestId === previewRequestId.current) {
+          setIsBusy(false);
+        }
       }
     },
     [],
