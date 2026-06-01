@@ -25,6 +25,8 @@ The same data-driven JSON recipes power the desktop and CLI workflows, covering 
 
 The desktop frontend lives in `apps/desktop`. It is a Tauri v2 app with a React/Vite UI that calls the Rust library directly for recipe listing, preview rendering, and export.
 
+<img src="apps/desktop/preview.jpeg" alt="filmlook desktop app showing recipe browsing, a split before and after image preview, and adjustment controls" width="960">
+
 Run the native desktop shell:
 
 ```sh
