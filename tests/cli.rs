@@ -151,6 +151,78 @@ fn processes_batch_folder_recursively() {
     );
 }
 
+#[test]
+fn batch_accepts_dotted_output_folder() {
+    let dir = tempdir().expect("tempdir");
+    let input_dir = dir.path().join("input");
+    let output_dir = dir.path().join("output.v1");
+    create_dir_all(&input_dir).expect("create input");
+    write_sample(&input_dir.join("a.png"));
+
+    let status = Command::new(env!("CARGO_BIN_EXE_filmlook"))
+        .arg(&input_dir)
+        .arg(&output_dir)
+        .args(["--recipe", "kodak-gold-200"])
+        .status()
+        .expect("run filmlook");
+
+    assert!(status.success());
+    assert_eq!(
+        image::open(output_dir.join("a.png"))
+            .expect("decode dotted output")
+            .dimensions(),
+        (10, 8)
+    );
+}
+
+#[test]
+fn batch_skips_output_folder_inside_input() {
+    let dir = tempdir().expect("tempdir");
+    let input_dir = dir.path().join("input");
+    let output_dir = input_dir.join("out");
+    create_dir_all(&output_dir).expect("create output inside input");
+    write_sample(&input_dir.join("a.png"));
+    write_sample(&output_dir.join("previous.png"));
+
+    let status = Command::new(env!("CARGO_BIN_EXE_filmlook"))
+        .current_dir(dir.path())
+        .arg("input")
+        .arg(&output_dir)
+        .args([
+            "--recursive",
+            "--recipe",
+            "ilford-hp5-plus-400",
+            "--seed",
+            "7",
+        ])
+        .status()
+        .expect("run filmlook");
+
+    assert!(status.success());
+    assert!(output_dir.join("a.png").exists());
+    assert!(!output_dir.join("out/previous.png").exists());
+}
+
+#[test]
+fn built_in_recipe_id_wins_over_same_named_local_path() {
+    let dir = tempdir().expect("tempdir");
+    let input = dir.path().join("input.png");
+    let output = dir.path().join("output.jpg");
+    create_dir_all(dir.path().join("portra-400-35mm")).expect("create shadowing path");
+    write_sample(&input);
+
+    let status = Command::new(env!("CARGO_BIN_EXE_filmlook"))
+        .current_dir(dir.path())
+        .arg(&input)
+        .arg(&output)
+        .args(["--recipe", "portra-400-35mm"])
+        .status()
+        .expect("run filmlook");
+
+    assert!(status.success());
+    assert!(output.exists());
+}
+
 fn write_sample(path: &std::path::Path) {
     let image = ImageBuffer::from_fn(10, 8, |x, y| {
         Rgb([

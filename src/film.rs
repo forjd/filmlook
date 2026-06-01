@@ -231,6 +231,12 @@ impl FilmRecipe {
                 "recipe id cannot be empty".to_string(),
             ));
         }
+        if !is_kebab_case_id(&self.id) {
+            return Err(RecipeError::Invalid(
+                "recipe id must be lowercase kebab-case using a-z, 0-9, and single hyphens"
+                    .to_string(),
+            ));
+        }
         if self.name.trim().is_empty() {
             return Err(RecipeError::Invalid(
                 "recipe name cannot be empty".to_string(),
@@ -996,6 +1002,26 @@ fn validate_range(name: &str, value: f32, min: f32, max: f32) -> Result<(), Reci
     Ok(())
 }
 
+fn is_kebab_case_id(id: &str) -> bool {
+    let mut previous_was_hyphen = false;
+    let mut saw_alphanumeric = false;
+
+    for byte in id.bytes() {
+        match byte {
+            b'a'..=b'z' | b'0'..=b'9' => {
+                previous_was_hyphen = false;
+                saw_alphanumeric = true;
+            }
+            b'-' if saw_alphanumeric && !previous_was_hyphen => {
+                previous_was_hyphen = true;
+            }
+            _ => return false,
+        }
+    }
+
+    saw_alphanumeric && !previous_was_hyphen
+}
+
 fn default_hue_sector_softness() -> f32 {
     0.5
 }
@@ -1326,6 +1352,16 @@ mod tests {
                 .to_string()
                 .contains("color.hue_sectors[0].width_degrees")
         );
+    }
+
+    #[test]
+    fn invalid_recipe_id_shape_is_rejected() {
+        let mut recipe = sample_recipe();
+        recipe.id = "Portra 400!".to_string();
+
+        let error = recipe.validate().expect_err("invalid id");
+
+        assert!(error.to_string().contains("lowercase kebab-case"));
     }
 
     #[test]

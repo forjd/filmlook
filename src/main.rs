@@ -163,13 +163,13 @@ fn list_recipes() {
 }
 
 fn resolve_recipe(selector: &str) -> Result<FilmRecipe> {
+    if let Some(recipe) = builtin_recipe(selector) {
+        return Ok(recipe);
+    }
+
     let path = Path::new(selector);
     if path.exists() {
         return load_recipe_from_path(path);
-    }
-
-    if let Some(recipe) = builtin_recipe(selector) {
-        return Ok(recipe);
     }
 
     bail!(
@@ -219,11 +219,20 @@ fn process_batch(cli: &Cli, recipe: &FilmRecipe, options: FilmOptions) -> Result
     let input = cli.input.as_ref().context("missing input path")?;
     let output = cli.output.as_ref().context("missing output path")?;
 
-    if output.extension().is_some() {
+    if output.exists() && !output.is_dir() {
         bail!("when input is a folder, output must be a folder path");
     }
 
     create_dir_all(output).with_context(|| format!("failed to create {}", output.display()))?;
+    let input_canonical = input
+        .canonicalize()
+        .with_context(|| format!("failed to resolve {}", input.display()))?;
+    let output_canonical = output
+        .canonicalize()
+        .with_context(|| format!("failed to resolve {}", output.display()))?;
+    if input_canonical == output_canonical {
+        bail!("batch output folder must be different from input folder");
+    }
 
     let mut walker = WalkDir::new(input).min_depth(1);
     if !cli.recursive {
@@ -232,7 +241,10 @@ fn process_batch(cli: &Cli, recipe: &FilmRecipe, options: FilmOptions) -> Result
 
     let mut processed = 0usize;
     let mut skipped = 0usize;
-    for entry in walker {
+    for entry in walker
+        .into_iter()
+        .filter_entry(|entry| !is_within_canonical_path(entry.path(), &output_canonical))
+    {
         let entry = entry.with_context(|| format!("failed to walk {}", input.display()))?;
         let input_path = entry.path();
 
@@ -240,7 +252,7 @@ fn process_batch(cli: &Cli, recipe: &FilmRecipe, options: FilmOptions) -> Result
             continue;
         }
 
-        if input_path.starts_with(output) || !is_supported_input(input_path) {
+        if !is_supported_input(input_path) {
             skipped += 1;
             continue;
         }
@@ -275,7 +287,11 @@ fn process_one(
     let loaded = load_image(input_path, !cli.no_auto_orient)
         .with_context(|| format!("failed to load {}", input_path.display()))?;
     if cli.verbose {
-        eprintln!("{}: {}", input_path.display(), loaded.metadata.summary());
+        eprintln!(
+            "{}: {}",
+            input_path.display(),
+            loaded.metadata.summary(!cli.no_auto_orient)
+        );
     } else if loaded.metadata.color_profile.requires_assumption_warning() {
         eprintln!(
             "Warning: {} has {}; processing currently assumes decoded RGB is sRGB",
@@ -485,11 +501,14 @@ fn save_image(image: &RgbImage, path: &Path, jpeg_quality: u8) -> Result<()> {
 }
 
 impl InputMetadata {
-    fn summary(&self) -> String {
-        let orientation = self
-            .orientation
-            .map(|orientation| format!("EXIF orientation {orientation} applied"))
-            .unwrap_or_else(|| "no EXIF orientation".to_string());
+    fn summary(&self, auto_orient: bool) -> String {
+        let orientation = match (self.orientation, auto_orient) {
+            (Some(orientation), true) => format!("EXIF orientation {orientation} applied"),
+            (Some(orientation), false) => {
+                format!("EXIF orientation {orientation} present; auto-orientation disabled")
+            }
+            (None, _) => "no EXIF orientation".to_string(),
+        };
 
         format!("{orientation}; {}", self.color_profile.summary())
     }
@@ -521,6 +540,11 @@ fn is_jpeg(path: &Path) -> bool {
     extension_matches(path, &["jpg", "jpeg"])
 }
 
+fn is_within_canonical_path(path: &Path, canonical_parent: &Path) -> bool {
+    path.canonicalize()
+        .is_ok_and(|canonical_path| canonical_path.starts_with(canonical_parent))
+}
+
 fn extension_matches(path: &Path, extensions: &[&str]) -> bool {
     path.extension()
         .and_then(|extension| extension.to_str())
@@ -530,4 +554,22 @@ fn extension_matches(path: &Path, extensions: &[&str]) -> bool {
                 .any(|candidate| extension.eq_ignore_ascii_case(candidate))
         })
         .unwrap_or(false)
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn metadata_summary_reports_disabled_auto_orientation() {
+        let metadata = InputMetadata {
+            orientation: Some(6),
+            color_profile: ColorProfile::AssumedSrgb,
+        };
+
+        let summary = metadata.summary(false);
+
+        assert!(summary.contains("EXIF orientation 6 present"));
+        assert!(summary.contains("auto-orientation disabled"));
+    }
 }
